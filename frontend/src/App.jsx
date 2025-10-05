@@ -78,7 +78,8 @@ function App() {
         owner: data.owner || '@unknown',
         views: formatCount(data.views || 0),
         likes: formatCount(data.likes || 0),
-        shares: formatCount(data.shares || 0)
+        shares: formatCount(data.shares || 0),
+        formats: data.formats || []
       })
       setLoading(false)
     } catch (error) {
@@ -109,9 +110,9 @@ function App() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ 
+            body: JSON.stringify({ 
             url: videoUrl,
-            quality: selectedQuality 
+            format_id: videoData.formats.find(f => f.quality === selectedQuality)?.format_id 
           })
         })
         
@@ -261,10 +262,11 @@ function App() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-gray-800 border-gray-700">
-                        <SelectItem value="4k" className="text-white">{t('4k_uhd')}</SelectItem>
-                        <SelectItem value="1080p" className="text-white">{t('1080p_fhd')}</SelectItem>
-                        <SelectItem value="720p" className="text-white">{t('720p_hd')}</SelectItem>
-                        <SelectItem value="360p" className="text-white">{t('360p_sd')}</SelectItem>
+                        {videoData.formats.map((format) => (
+                          <SelectItem key={format.format_id} value={format.quality} className="text-white">
+                            {format.quality}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
