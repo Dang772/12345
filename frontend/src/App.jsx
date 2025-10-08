@@ -125,7 +125,7 @@ function App() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `tiktok_video_${Date.now()}.mp4`; // You might want to get the actual filename from headers
+        a.download = `tiktok_video_${Date.now()}.${selectedQuality === 'Audio' ? 'mp3' : 'mp4'}`; // Dynamically set extension based on quality
         document.body.appendChild(a);
         a.click();
         a.remove();
